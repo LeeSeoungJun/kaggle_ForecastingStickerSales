@@ -33,3 +33,12 @@ Kaggle 공식 평가 지표인 **MAPE (Mean Absolute Percentage Error)** 를 기
 
 전체 EDA, 전처리 및 모델링 과정은  
 `Forecasting_Sticker_Sales.ipynb`에서 확인할 수 있습니다.
+
+
+## 원본 데이터
+
+- `train.csv`: 학습 데이터
+- `test.csv`: 예측 대상 데이터
+- `sample_submission.csv`: 제출 형식 예시
+
+저장소 루트에서 노트북을 실행하면 포함된 데이터를 읽을 수 있습니다.
