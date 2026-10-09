@@ -1,0 +1,13 @@
+{
+  "selected_model": "Seasonal baseline",
+  "selection_year": 2015,
+  "final_validation_year": 2016,
+  "final_metrics": {
+    "year": 2016,
+    "model": "Seasonal baseline",
+    "mape_percent": 12.688716050880789,
+    "mae": 88.28800849417344,
+    "zero_actual_rows": 0,
+    "rows": 31767
+  }
+}
