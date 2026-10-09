@@ -1,44 +1,44 @@
-# Forecasting Sticker Sales
+# 스티커 판매량 예측
 
-Kaggle **Playground Series - Season 5, Episode 1** 데이터를 활용해 국가, 매장, 상품별 스티커 판매량(`num_sold`)을 예측한 시계열 회귀 프로젝트입니다.
+## 분석 질문과 방법
 
-🔗 [Kaggle Competition](https://www.kaggle.com/competitions/playground-series-s5e1/overview)
+판매량(num_sold)을 대상으로 개별 절대 상대오차 평균인 MAPE를 계산합니다. 실제값 0의 상대오차는 정의되지 않아 개수와 MAE를 함께 보고합니다. 2015년 선택용, 2016년 최종 검증으로 미래 예측 상황을 반영합니다. 전년 동일 월일 기준 모델과 XGBoost를 비교하며 마지막 연도 성능으로 모델을 재선택하지 않습니다. 타깃 결측 제외 편향과 2017~2019년 장기 외삽 한계를 명시합니다.
 
-## 프로젝트 목표
+## 실행
 
-날짜, 국가, 매장, 상품 정보를 활용하여 향후 스티커 판매량을 예측하는 머신러닝 모델을 구축했습니다.
+Python 3.11 이상에서 저장소 폴더를 작업 디렉터리로 사용합니다.
 
-## 분석 과정
+```bash
+python -m pip install -r requirements.txt
+python analysis.py
+```
 
-### 1. 데이터 전처리
-- `num_sold` 결측값 제거
-- `date`를 `year`, `month`, `day` 파생변수로 변환
-- `country`, `store`, `product`를 `LabelEncoder`로 인코딩
-- 모델 학습에 불필요한 `id`, `date` 컬럼 제거
+[Forecasting_Sticker_Sales.ipynb](Forecasting_Sticker_Sales.ipynb)에서 실행 결과와 그래프를 확인할 수 있습니다.
+원본 데이터 경로는 기존 저장소와 동일합니다. 주가 프로젝트만 최초 실행 시 Yahoo Finance 연결이 필요합니다.
 
-### 2. 모델링
-- Train / Validation 데이터를 8:2 비율로 분리
-- `XGBRegressor`를 활용해 판매량 예측 모델 학습
+## 결과와 한계
 
-### 3. 평가
+실제 실행 결과는 `outputs/metrics.json`과 `outputs/`의 비교표·그래프에 저장됩니다.
+수정 전 저장된 점수는 새 검증 결과와 혼용하지 않습니다. 검증 점수는 대회 리더보드 점수가 아닙니다.
+모델을 정한 뒤 제출 데이터 전체를 예측하며, 제출 파일을 만들었다는 사실이 대회에 제출했다는 의미는 아닙니다.
+분석에서 확인한 관계와 제안은 실제 업무 개선 효과를 증명하지 않습니다.
 
-Kaggle 공식 평가 지표인 **MAPE (Mean Absolute Percentage Error)** 를 기준으로 모델 성능을 확인했습니다.
+## 재실행 결과 (2026-10-10)
 
-## 사용 기술
+```json
+{
+  "selected_model": "Seasonal baseline",
+  "selection_year": 2015,
+  "final_validation_year": 2016,
+  "final_metrics": {
+    "year": 2016,
+    "model": "Seasonal baseline",
+    "mape_percent": 12.688716050880789,
+    "mae": 88.28800849417344,
+    "zero_actual_rows": 0,
+    "rows": 31767
+  }
+}
+```
 
-`Python` `Pandas` `NumPy`  
-`Matplotlib` `Seaborn` `Scikit-learn` `XGBoost`
-
-## Notebook
-
-전체 EDA, 전처리 및 모델링 과정은  
-`Forecasting_Sticker_Sales.ipynb`에서 확인할 수 있습니다.
-
-
-## 원본 데이터
-
-- `train.csv`: 학습 데이터
-- `test.csv`: 예측 대상 데이터
-- `sample_submission.csv`: 제출 형식 예시
-
-저장소 루트에서 노트북을 실행하면 포함된 데이터를 읽을 수 있습니다.
+MAPE 기준으로 전년 동일 월일 모델을 선택했습니다. MAE에서는 XGBoost가 더 좋았으므로 최적 모델은 의사결정의 비용과 평가지표에 따라 달라집니다. 미래 제출 기간은 더 길어 성능이 달라질 수 있습니다.
